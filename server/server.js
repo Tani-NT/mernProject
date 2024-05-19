@@ -16,7 +16,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/mernProject", router);
+app.use("/", router);
 app.use("/api/form",contactRoute);
 app.use("/api/data",serviceRoute);
 app.use(errorMiddleware);
