@@ -4,10 +4,10 @@ const express = require('express');
 const cors = require("cors");
 const app = express();
 const router = require('./route/auth-route');
-const contactRoute = require("./route/contact-route");
 const connectDB = require('./utils/db');
 const errorMiddleware = require("./middleware/error-middleware");
-
+const contactRoute = require("./route/contact-route");
+const serviceRoute = require("./route/service-route");
 
 const corsOptions = {
     origin: "http://localhost:5173",
@@ -16,17 +16,10 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/", router);
-app.use("/api/form", contactRoute);
+app.use("/mernProject", router);
+app.use("/api/form",contactRoute);
+app.use("/api/data",serviceRoute);
 app.use(errorMiddleware);
-
-// app.get('/',(req,res)=>{
-//     res.status(200).send("Hey there!");
-// })
-
-// app.get('/register',(req,res)=>{
-//     res.status(200).send("register page here..")
-// })
 
 connectDB().then(()=>{
     const PORT = 3000;

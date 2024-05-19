@@ -1,5 +1,4 @@
 const User = require("../models/user-model");
-const bcrypt = require("bcryptjs");
 
 const home = async(req,res)=>{
     try {
@@ -19,7 +18,6 @@ const register = async(req,res,next)=>{
         if(userExist){
             return res.status(400).json({msg: "Email already Exists!!"});
         }
-
         const userCreated = await User.create({username, email, phone, password});
 
         // hash the password
@@ -60,4 +58,14 @@ const login = async function(req,res){
     }
 }
 
-module.exports = {home, register, login};
+const user = async(req,res)=>{
+    try{
+        const userData = req.user;
+        res.status(200).json({userData});
+    }
+    catch(error){
+        console.log("error from sending data to user: ",error);
+    }
+}
+
+module.exports = {home, register, login, user};

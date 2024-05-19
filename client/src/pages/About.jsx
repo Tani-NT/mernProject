@@ -1,12 +1,15 @@
 import { NavLink } from "react-router-dom";
 import Anlaytics from "../component/Anlaytics";
+import { useAuth } from "../store/auth";
 
 const About = () => {
+  const {user} = useAuth();
+
   return (
     <>
       <section className="w-full h-full flex items-center justify-between p-[3vw] bg-zinc-700 text-white max-sm:flex-col max-sm:gap-[3vw]">
         <div className="w-1/2 px-[1vw] max-sm:w-full">
-          <h5 className="text-[1.3vw] font-semibold">Welcome to Technical Titans,</h5>
+          <h5 className="text-[1.3vw] font-semibold">Welcome {user ? `${user.username}` : "User"}</h5>
           <h1 className="text-[4vw] font-bold">Why Choose Us ?</h1>
           <p className="text-[1.2vw] mb-[1vw]">
             Expertise: Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit possimus aut deleniti. Totam rem aliquid alias nostrum. Distinctio, quod et?

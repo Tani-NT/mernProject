@@ -34,9 +34,10 @@ const Register = () => {
             },
             body:JSON.stringify(user)
         });
+        const res_data = await response.json();
+        console.log("response from server: ", res_data.message);
 
         if(response.ok){
-            const res_data = await response.json();
             storeTokenInLS(res_data.token);
             setUser({
                 username: "",
@@ -46,9 +47,9 @@ const Register = () => {
             })
             navigate("/login");
         }
-
-        console.log(response);
-
+        else{
+            alert(res_data.extraDetails);
+        }
     };
 
   return (

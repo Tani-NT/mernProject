@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../store/auth";
 
 function Contact() {
 
@@ -7,6 +8,20 @@ function Contact() {
     email: "",
     message: "",
   });
+
+  const [userData, setUserData] = useState(true);
+  const {user} = useAuth();
+  
+
+  if(userData && user){
+    setContact({
+      username: user.username,
+      email: user.email,
+      message:""
+    });
+    setUserData(false);
+  }
+
 
   const handleInput = (e) =>{
     let name = e.target.name;
@@ -20,19 +35,29 @@ function Contact() {
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
-    console.log(contact);
-    try{
-      const response = await fetch (`http://localhost:3000/api/form/contact`,{
+    try {
+      const response = await fetch("http://localhost:3000/api/form/contact",{
         method: "POST",
-        header:{
-          "Content-Type": "application/json"
+        headers:{
+          "Content-Type":"application/json"
         },
         body: JSON.stringify(contact)
       });
-      console.log(response);
-    }
-    catch(error){
-      console.log(error);
+
+      if(response.ok){
+        setContact({
+          username:"",
+          email:"",
+          message:""
+        });
+        const data = await response.json();
+        console.log(data);
+      }
+      else{
+        console.log("error while fetching data from contact");
+      }
+    } catch (error) {
+      console.log("Error: ",error);
     }
   }
 
@@ -48,17 +73,17 @@ function Contact() {
             <form className="w-full px-[3vw]" onSubmit={handleSubmit}>
                 <label className="text-[1.2vw] font-semibold">Username</label>
                 <br/>
-                <input className="p-[.6vw] w-full text-[1.3vw] bg-zinc-800 text-white rounded-sm mb-[1vw]" type="username" placeholder="Your Username" value={contact.username} onChange={handleInput} name="username" id="username" required autoComplete="off"/>
+                <input className="p-[.6vw] w-full text-[1.3vw] bg-zinc-800 text-white rounded-sm mb-[1vw]" type="username" placeholder="Your Username" value={contact.username}  onChange={handleInput} name="username" id="username" required autoComplete="off"/>
                 <br/>
                 <label className="text-[1.2vw] font-semibold">Email</label>
                 <br/>
-                <input className="p-[.6vw] w-full text-[1.3vw] bg-zinc-800 text-white rounded-sm mb-[1vw]" type="email" placeholder="Your Email" value={contact.email} onChange={handleInput} name="email" required autoComplete="off" id="email"  />
+                <input className="p-[.6vw] w-full text-[1.3vw] bg-zinc-800 text-white rounded-sm mb-[1vw]" type="email" placeholder="Your Email" value={contact.email}  onChange={handleInput} name="email" required autoComplete="off" id="email"  />
                 <br/>
                 <label className="text-[1.2vw] font-semibold">Message</label>
                 <br/>
                 <textarea name="message" id="message" rows="10" cols="30" placeholder="Your Message" className="p-[.6vw] w-full text-[1.3vw] bg-zinc-800 text-white rounded-sm mb-[1vw]"></textarea>
                 <br/>
-                <button type="submit" className="bg-[#3466d1] text-[1.6vw] text-white px-[.7vw] py-[.4vw] rounded-md mt-[1vw]">Submit</button>
+                <button type="submit" className="bg-[#3466d1] text-[1.6vw] text-white px-[.7vw] py-[.4vw] rounded-md my-[1.5vw] ">Submit</button>
             </form>
           </div>
         </div>

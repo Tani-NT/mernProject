@@ -3,6 +3,7 @@ const router = express.Router();
 const authController = require('../controller/auth-controller');
 const validate = require("../middleware/auth-middleware");
 const {signupSchema, loginSchema} = require("../validator/auth-validator");
+const authMiddleware = require('../middleware/user-middleware');
 
 router.route('/home').get(authController.home);
 router
@@ -11,14 +12,9 @@ router
 router
     .route("/login")
     .post(validate(loginSchema), authController.login);
+router
+    .route("/user")
+    .get(authMiddleware, authController.user);
 
-
-// router.get('/router',(req,res)=>{
-//     res.status(200).send("router page..")
-// })
-
-// router.route('/register').get((req,res)=>{
-//     res.status(200).send("register page through route method ..")
-// })
 
 module.exports = router;

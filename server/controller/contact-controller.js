@@ -1,12 +1,14 @@
 const Contact = require("../models/contact-model");
 
-const contactForm = async(req,res) =>{
+const contactForm = async (req, res) => {
     try {
         const response = req.body;
-        await Contact.create(response);
-        return res.status(200).json({msg: "message send successfully"});
+        const contactDB = await Contact.create(response);
+        console.log("Contact saved:", contactDB);
+        return res.status(200).json({ msg: "Message sent successfully!" });
     } catch (error) {
-        res.status(500).json({msg: "messge not delivered"});
+        console.error("Error saving contact:", error);
+        return res.status(500).json({ msg: "Message not delivered!" });
     }
 }
 
